@@ -1,0 +1,27 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.csproj.user
+TestResults/
+
+# NuGet
+*.nupkg
+.nuget/
+packages/
+!packages/.gitkeep
+
+# Angular
+frontend/monolegal-front/node_modules/
+frontend/monolegal-front/dist/
+frontend/monolegal-front/.angular/
+
+# Secrets - never commit real credentials
+**/appsettings.Production.json
+**/secrets.json
+
+# OS
+.DS_Store
+Thumbs.db

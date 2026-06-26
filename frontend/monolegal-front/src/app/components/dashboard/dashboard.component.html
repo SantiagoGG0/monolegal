@@ -1,0 +1,121 @@
+<div class="dashboard">
+  <header class="header">
+    <div class="header-left">
+      <h1>MonoLegal</h1>
+      <span class="subtitle">Gestión de Facturas</span>
+    </div>
+    <div class="header-right">
+      <button class="btn btn-secondary" (click)="cargarResumen()" [disabled]="cargando || procesando">
+        {{ cargando ? 'Cargando...' : 'Actualizar' }}
+      </button>
+      <button class="btn btn-primary" (click)="procesarNotificaciones()" [disabled]="procesando || cargando">
+        {{ procesando ? 'Procesando...' : 'Procesar Notificaciones' }}
+      </button>
+    </div>
+  </header>
+
+  <main class="content">
+    @if (error) {
+      <div class="alert alert-error">{{ error }}</div>
+    }
+
+    @if (mostrarResultados && resultados.length > 0) {
+      <section class="card resultados-card">
+        <h2>Resultado del procesamiento</h2>
+        <p class="resultados-meta">{{ resultados.length }} factura(s) procesada(s)</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Email cliente</th>
+                <th>Estado anterior</th>
+                <th>Estado nuevo</th>
+                <th>Email enviado</th>
+                <th>Observación</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (r of resultados; track r.facturaId) {
+                <tr>
+                  <td>{{ r.clienteEmail }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="estadoBadgeClass(r.estadoAnterior)">
+                      {{ estadoLabel(r.estadoAnterior) }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="estadoBadgeClass(r.estadoNuevo)">
+                      {{ estadoLabel(r.estadoNuevo) }}
+                    </span>
+                  </td>
+                  <td>
+                    <span [class]="r.emailEnviado ? 'check-ok' : 'check-fail'">
+                      {{ r.emailEnviado ? '✓' : '✗' }}
+                    </span>
+                  </td>
+                  <td class="text-muted">{{ r.error ?? '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+    }
+
+    @if (mostrarResultados && resultados.length === 0) {
+      <div class="alert alert-info">No había facturas pendientes de notificación.</div>
+    }
+
+    @if (cargando) {
+      <div class="loading-state">Cargando datos...</div>
+    } @else if (clientes.length === 0 && !error) {
+      <div class="empty-state">No hay clientes registrados.</div>
+    } @else {
+      <div class="clientes-list">
+        @for (cliente of clientes; track cliente.clienteId) {
+          <section class="card cliente-card">
+            <div class="cliente-header">
+              <div>
+                <h2>{{ cliente.clienteNombre }}</h2>
+                <p class="text-muted">{{ cliente.clienteEmail }}</p>
+              </div>
+              <div class="cliente-stats">
+                <span class="stat-pill">{{ cliente.totalFacturas }} factura(s)</span>
+                <span class="stat-monto">$ {{ cliente.montoTotal | number:'1.0-0' }}</span>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Número</th>
+                    <th>Descripción</th>
+                    <th>Monto</th>
+                    <th>Vencimiento</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (f of cliente.facturas; track f.id) {
+                    <tr>
+                      <td class="mono">{{ f.numero }}</td>
+                      <td>{{ f.descripcion }}</td>
+                      <td>$ {{ f.monto | number:'1.0-0' }}</td>
+                      <td>{{ f.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
+                      <td>
+                        <span class="badge" [ngClass]="estadoBadgeClass(f.estado)">
+                          {{ estadoLabel(f.estado) }}
+                        </span>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </section>
+        }
+      </div>
+    }
+  </main>
+</div>

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MonoLegal.Application\MonoLegal.Application.csproj" />
+    <ProjectReference Include="..\MonoLegal.Infrastructure\MonoLegal.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>
