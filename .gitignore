@@ -19,6 +19,7 @@ frontend/monolegal-front/dist/
 frontend/monolegal-front/.angular/
 
 # Secrets - never commit real credentials
+**/appsettings.json
 **/appsettings.Production.json
 **/secrets.json
 

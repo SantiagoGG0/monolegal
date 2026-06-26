@@ -5,6 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\MonoLegal.Application\MonoLegal.Application.csproj" />
     <ProjectReference Include="..\MonoLegal.Infrastructure\MonoLegal.Infrastructure.csproj" />
   </ItemGroup>
